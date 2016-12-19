@@ -14,6 +14,8 @@ import Repositories from './pages/Repositories.vue'
 Vue.use(VueRouter)
 Vue.use(VueResource)
 
+import 'font-awesome/css/font-awesome.css'
+
 // Define Routes
 const routes = [
     { path: '/gists', component: Gists },
