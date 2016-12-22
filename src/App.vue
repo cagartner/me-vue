@@ -1,32 +1,38 @@
 <template>
-    <div class="container page">
+    <div class="page">
         <router-view></router-view>
     </div>
 </template>
 
 <script>
+    import Vue from 'vue'
+
     const apiUrl = 'https://api.github.com/users/cagartner'
 
     export default {
         name: 'App',
-        data () {
-            return {
-                user: {}
-            }
-        },
         mounted() {
-            this.getUserInfo()
-            document.getElementById('loader').style.display = 'none';
+            this.getUserInfo(function () {
+                document.getElementById('loader').style.display = 'none';
+            })
         },
         methods: {
-            getUserInfo() {
+            getUserInfo(callback) {
                 var me = this
                 this.$http.get(apiUrl).then((response) => {
                     // success callback
-                    me.$set(me, 'user', response.body)
+                    me.$store.state.user = response.body
+                    return callback()
                 }, (response) => {
                     // error callback
-                });
+                    return callback()
+                })
+            }
+        },
+
+        computed: {
+            user () {
+                return this.$store.state.user;
             }
         }
     }
@@ -70,6 +76,7 @@
     }
 
     .page {
+        @extend .container;
         background-color: $light-cl;
         min-height: 40vh;
         box-shadow: 1px 3px 3px  darken($black-cl, 10%);
@@ -78,7 +85,7 @@
         color: $black-cl;
         position: relative;
 
-        @media (max-width: 700px) {
+        @media only screen and (max-width : 768px) {
             padding: 5rem 2rem 2rem;
         }
     }

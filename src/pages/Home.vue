@@ -104,14 +104,11 @@
     export default{
         name: 'HomePage',
         mounted() {
-            this.$set(this, 'user', this.$parent.user)
             this.getResumeFromRepo()
         },
 
         data() {
             return{
-                user: {
-                },
                 resume: '# Resume',
                 error: false,
                 errorMessage: ''
@@ -119,8 +116,12 @@
         },
 
         computed: {
-            resumeMarkdown () {
+            resumeMarkdown() {
                 return marked(this.resume)
+            },
+
+            user() {
+                return this.$store.state.user;
             }
         },
 
